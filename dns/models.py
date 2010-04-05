@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 RR_TYPES = (
 	('A', 'Host'),
@@ -12,24 +13,26 @@ RR_TYPES = (
 
 class Serial (models.Model):
 	domain = models.ForeignKey('Domain', null=False)
-	serial = models.IntegerField()
+	serial = models.IntegerField(null=False)
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
+	class Meta:
+		unique_together = (("domain", "serial"),)
 
 class Domain (models.Model):
 	name = models.CharField(max_length=255, null=False)
 	current_serial = models.ForeignKey(Serial, null=True, related_name='current_serial')
+	def __unicode__(self):
+		return self.name
 
 class Record (models.Model):
 	domain = models.ForeignKey(Domain)
 	name = models.CharField(max_length=255, null=True)
 	type = models.CharField(max_length=6, choices=RR_TYPES)
 	content = models.CharField(max_length=255, null=True)
-	ttl = models.IntegerField()
-	prio = models.IntegerField()
-	since_date = models.DateTimeField()
-	out_date = models.DateTimeField()
-
-#class SuperMaster (models.Model):
-#	nameserver
-#	account
+	ttl = models.IntegerField(default=3600)
+	prio = models.IntegerField(default=0)
+	since_date = models.DateTimeField(default=datetime.datetime.now)
+	out_date = models.DateTimeField(default=datetime.datetime.max)
+	def __unicode__(self):
+		return self.name
