@@ -14,4 +14,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+
+    # cob urls
+    (r'^dns/domains/$', 'cob.dns.views.domain_list'),
+    (r'^dns/domains/(?P<domain_id>\d+)/$', 'cob.dns.views.domain_detail'),
 )

@@ -1,0 +1,9 @@
+{% if domains %}
+    <ul>
+    {% for domain in domains %}
+        <li><a href="/dns/domains/{{ domain.id }}/">{{ domain.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No domains are available.</p>
+{% endif %}

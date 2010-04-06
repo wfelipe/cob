@@ -2,13 +2,13 @@ from django.db import models
 import datetime
 
 RR_TYPES = (
-	('A', 'Host'),
-	('NS', 'Name Server'),
-	('CNAME', 'Canonical Name/Alias'),
-	('SOA', 'Start of a zone authority'),
-	('PTR', 'Name Pointer/Reverse'),
-	('MX', 'Mail Exchange'),
-	('TXT', 'Text Strings'),
+	('A', 'A'),		# Host
+	('NS', 'NS'),		# Name Server
+	('CNAME', 'CNAME'),	# Canonical Name/Alias
+	('SOA', 'SOA'),		# Start of a zone authority
+	('PTR', 'PTR'),		# Name Pointer/Reverse
+	('MX', 'MX'),		# Mail Exchange
+	('TXT', 'TXT'),		# Text Strings
 )
 
 class Serial (models.Model):
@@ -16,12 +16,17 @@ class Serial (models.Model):
 	serial = models.IntegerField(null=False)
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
+
 	class Meta:
 		unique_together = (("domain", "serial"),)
+
+	def __unicode__(self):
+		return str(self.serial)
 
 class Domain (models.Model):
 	name = models.CharField(max_length=255, null=False)
 	current_serial = models.ForeignKey(Serial, null=True, related_name='current_serial')
+
 	def __unicode__(self):
 		return self.name
 
@@ -34,5 +39,6 @@ class Record (models.Model):
 	prio = models.IntegerField(default=0)
 	since_date = models.DateTimeField(default=datetime.datetime.now)
 	out_date = models.DateTimeField(default=datetime.datetime.max)
+
 	def __unicode__(self):
 		return self.name
