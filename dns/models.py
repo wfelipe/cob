@@ -13,6 +13,7 @@ RR_TYPES = (
 
 class Serial (models.Model):
 	domain = models.ForeignKey('Domain', null=False)
+	#domain = models.ManyToManyField('Domain', null=False)
 	serial = models.IntegerField(null=False)
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
@@ -25,7 +26,6 @@ class Serial (models.Model):
 
 class Domain (models.Model):
 	name = models.CharField(max_length=255, null=False)
-	current_serial = models.ForeignKey(Serial, null=True, related_name='current_serial')
 
 	def __unicode__(self):
 		return self.name
@@ -42,3 +42,10 @@ class Record (models.Model):
 
 	def __unicode__(self):
 		return self.name
+
+#
+# current serial
+#
+class DomainSerial (models.Model):
+	domain = models.ForeignKey(Domain, null=False)
+	serial = models.ForeignKey(Serial, null=False)

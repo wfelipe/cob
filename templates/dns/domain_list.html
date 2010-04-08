@@ -1,9 +1,16 @@
 {% if domains %}
     <ul>
-    {% for domain in domains %}
+    {% for domain in domains.object_list %}
         <li><a href="/dns/domains/{{ domain.id }}/">{{ domain.name }}</a></li>
     {% endfor %}
     </ul>
+
+    {% if domains.has_previous %}
+        <a href="?page={{ domains.previous_page_number }}">prev</a>
+    {% endif %}
+    {% if domains.has_next %}
+        <a href="?page={{ domains.next_page_number }}">next</a>
+    {% endif %}
 {% else %}
     <p>No domains are available.</p>
 {% endif %}

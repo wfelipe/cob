@@ -2,7 +2,7 @@ from cob.dns.models import *
 from django.contrib import admin
 
 class DomainAdmin(admin.ModelAdmin):
-	list_display = ['name', 'current_serial']
+	list_display = ['name']
 
 class RecordAdmin(admin.ModelAdmin):
 	list_display = ['name', 'domain']

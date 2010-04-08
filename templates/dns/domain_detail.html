@@ -1,1 +1,21 @@
 {{ domain }}
+{% if domain %}
+  {% if records %}
+    <ul>
+    {% for record in records.object_list %}
+        <li>{{ record.name }}</li>
+    {% endfor %}
+    </ul>
+
+    {% if records.has_previous %}
+        <a href="?page={{ records.previous_page_number }}">prev</a>
+    {% endif %}
+    {% if records.has_next %}
+        <a href="?page={{ records.next_page_number }}">next</a>
+    {% endif %}
+  {% else %}
+    <p>No records found</p>
+  {% endif %}
+{% else %}
+  <p>No domain found</p>
+{% endif %}
