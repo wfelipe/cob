@@ -10,6 +10,10 @@ class RecordAdmin(admin.ModelAdmin):
 class SerialAdmin(admin.ModelAdmin):
 	list_display = ['serial', 'domain']
 
+class DomainSerialAdmin(admin.ModelAdmin):
+	list_display = ['domain', 'serial']
+
 admin.site.register(Domain, DomainAdmin)
 admin.site.register(Serial, SerialAdmin)
 admin.site.register(Record, RecordAdmin)
+admin.site.register(DomainSerial, DomainSerialAdmin)

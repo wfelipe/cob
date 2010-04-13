@@ -13,7 +13,6 @@ RR_TYPES = (
 
 class Serial (models.Model):
 	domain = models.ForeignKey('Domain', null=False)
-	#domain = models.ManyToManyField('Domain', null=False)
 	serial = models.IntegerField(null=False)
 	start_date = models.DateTimeField()
 	end_date = models.DateTimeField()
@@ -26,6 +25,9 @@ class Serial (models.Model):
 
 class Domain (models.Model):
 	name = models.CharField(max_length=255, null=False)
+	# pattern to create serials
+	# the goal is to be YYYYMMDDxx (where xx is incremental)
+	serial_pattern = models.CharField(max_length=100)
 
 	def __unicode__(self):
 		return self.name
@@ -33,6 +35,8 @@ class Domain (models.Model):
 class Record (models.Model):
 	domain = models.ForeignKey(Domain)
 	name = models.CharField(max_length=255, null=True)
+	# fullname = name.domain
+	fullname = models.CharField(max_length=255, null=True)
 	type = models.CharField(max_length=6, choices=RR_TYPES)
 	content = models.CharField(max_length=255, null=True)
 	ttl = models.IntegerField(default=3600)
@@ -47,5 +51,5 @@ class Record (models.Model):
 # current serial
 #
 class DomainSerial (models.Model):
-	domain = models.ForeignKey(Domain, null=False)
+	domain = models.ForeignKey(Domain, null=False, unique=True)
 	serial = models.ForeignKey(Serial, null=False)
