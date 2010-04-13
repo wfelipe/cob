@@ -1,11 +1,23 @@
-{{ domain }}
+Domain: {{ domain }}
 {% if domain %}
   {% if records %}
-    <ul>
+<table border="1">
+  <th>Name</th>
+  <th>Type</th>
+  <th>RDATA</th>
+  <th>Entry Since</th>
+  <th>Entry Out</th>
     {% for record in records.object_list %}
-        <li>{{ record.name }}</li>
+  <tr>
+    <td>{{ record.name }}</td>
+    <td>{{ record.type }}</td>
+    <td>{{ record.content }}</td>
+    <td>{{ record.since_date }}</td>
+    <td>{{ record.out_date }}</td>
+  </tr>
     {% endfor %}
     </ul>
+</table>
 
     {% if records.has_previous %}
         <a href="?page={{ records.previous_page_number }}">prev</a>

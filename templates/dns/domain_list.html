@@ -1,15 +1,24 @@
-{% if domains %}
-    <ul>
-    {% for domain in domains.object_list %}
-        <li><a href="/dns/domains/{{ domain.id }}/">{{ domain.name }}</a></li>
+{% if domainserials %}
+<table border="1">
+  <th>Domain</th>
+  <th>Current Serial</th>
+  <th>Start</th>
+  <th>End</th>
+    {% for ds in domainserials.object_list %}
+  <tr>
+    <td><a href="/dns/domains/{{ ds.domain.id }}/">{{ ds.domain }}</a></td>
+    <td>{{ ds.serial }}</td>
+    <td>{{ ds.serial.start_date }}</td>
+    <td>{{ ds.serial.end_date }}</td>
+  </tr>
     {% endfor %}
-    </ul>
+</table>
 
-    {% if domains.has_previous %}
-        <a href="?page={{ domains.previous_page_number }}">prev</a>
+    {% if domainserials.has_previous %}
+        <a href="?page={{ domainserials.previous_page_number }}">prev</a>
     {% endif %}
-    {% if domains.has_next %}
-        <a href="?page={{ domains.next_page_number }}">next</a>
+    {% if domainserials.has_next %}
+        <a href="?page={{ domainserials.next_page_number }}">next</a>
     {% endif %}
 {% else %}
     <p>No domains are available.</p>
