@@ -1,4 +1,30 @@
 Domain: {{ domain }}
+
+<!-- serial list -->
+<form action="/dns/domains/compare/" method="post">
+  <input type="hidden" name="domain" value="{{ domain }}" />
+  <table border="1">
+    <th>Serial</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th></th>
+    <th></th>
+{% for serial in serials %}
+    <tr>
+      <td>{{ serial.serial }}</td>
+      <td>{{ serial.start_date }}</td>
+      <td>{{ serial.end_date }}</td>
+      <td><input type="radio" name="serial1" value="{{ serial.serial }}" /></td>
+      <td><input type="radio" name="serial2" value="{{ serial.serial }}" /></td>
+    </tr>
+{% endfor %}
+  </table>
+  <input type="submit" value="Compare" />
+</form>
+
+<br/>
+
+<!-- record list -->
 {% if domain %}
   {% if records %}
 <table border="1">
