@@ -6,6 +6,7 @@ from cob.dns.models import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
+@login_required
 def domain_list(request):
 	paginator = Paginator(DomainSerial.objects.all(), 20)
 	try:

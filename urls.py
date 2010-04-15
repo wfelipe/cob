@@ -15,6 +15,14 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 
+    # login
+    (r'^accounts/login/$', 'django.contrib.auth.views.login',
+      { 'template_name': 'login.html' }),
+
+    # static content
+    (r'^stc/(?P<path>.*)$', 'django.views.static.serve',
+        { 'document_root': 'templates/stc' }),
+
     # cob urls
     (r'^dns/domains/$', 'cob.dns.views.domain_list'),
     (r'^dns/domains/(?P<domain_id>\d+)/$', 'cob.dns.views.domain_detail'),
