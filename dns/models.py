@@ -28,6 +28,13 @@ class Domain (models.Model):
 	# pattern to create serials
 	# the goal is to be YYYYMMDDxx (where xx is incremental)
 	serial_pattern = models.CharField(max_length=100)
+	# SOA definitions
+	source = models.CharField(max_length=100)
+	contact = models.CharField(max_length=100)
+	refresh = models.IntegerField(null=False, default=3600)
+	retry = models.IntegerField(null=False, default=600)
+	expire = models.IntegerField(null=False, default=84600)
+	ttl = models.IntegerField(null=False, default=3600)
 
 	def __unicode__(self):
 		return self.name
