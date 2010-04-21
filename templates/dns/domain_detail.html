@@ -1,4 +1,11 @@
-Domain: {{ domain }}
+Domain: {{ domain }} <br/>
+Serial Pattern: {{ domain.serial_pattern }} <br/>
+Source: {{ domain.source }} <br/>
+Contact: {{ domain.contact }} <br/>
+Refresh: {{ domain.refresh }} <br/>
+Retry: {{ domain.retry }} <br/>
+Expire: {{ domain.expire }} <br/>
+TTL: {{ domain.ttl }}
 
 <!-- serial list -->
 <form action="/dns/domains/compare/" method="post">
