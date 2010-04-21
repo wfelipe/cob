@@ -18,8 +18,13 @@ def domain_list(request):
 		ds = paginator.page(page)
 	except (EmptyPage, InvalidPage):
 		ds = paginator.page(paginator.num_pages)
-	return render_to_response('dns/domain_list.html', { 'domainserials': ds, })
+	print ds
+	return render_to_response('dns/domain_list.html', {
+		'domainserials': ds,
+		'total': paginator.count,
+	})
 
+@login_required
 def domain_detail(request, domain_id):
 	domain = get_object_or_404(Domain, pk=domain_id)
 	serials = Serial.objects.filter(domain=domain)
@@ -45,6 +50,7 @@ def domain_detail(request, domain_id):
 		  'records': records,
 		})
 
+@login_required
 def domain_compare(request):
 	if request.method == 'POST':
 		post = request.POST
@@ -63,4 +69,26 @@ def domain_compare(request):
 		'serials': serials,
 		'new_records': new_records,
 		'rm_records': rm_records,
+	})
+
+@login_required
+def domain_new(request):
+	if request.method != 'POST':
+		return render_to_response('dns/domain_new.html', {})
+	# POST is left
+	post = request.POST
+	# TODO there should be a better way...
+	domain = Domain()
+	if post['name']: domain.name = post['name']
+	if post['serial_pattern']: domain.serial_pattern = post['serial_pattern']
+	if post['source']: domain.source = post['source']
+	if post['contact']: domain.contact = post['contact']
+	if post['refresh']: domain.contact = post['refresh']
+	if post['retry']: domain.retry = post['retry']
+	if post['expire']: domain.expire = post['expire']
+	if post['ttl']: domain.ttl = post['ttl']
+	domain.save()
+
+	return render_to_response('dns/domain_new.html', {
+		'method': 'post',
 	})
