@@ -24,7 +24,7 @@ class Serial (models.Model):
 		return str(self.serial)
 
 class Domain (models.Model):
-	name = models.CharField(max_length=255, null=False)
+	name = models.CharField(max_length=100, null=False)
 	# pattern to create serials
 	# the goal is to be YYYYMMDDxx (where xx is incremental)
 	serial_pattern = models.CharField(max_length=100)
