@@ -29,8 +29,8 @@ class Domain (models.Model):
 	# the goal is to be YYYYMMDDxx (where xx is incremental)
 	serial_pattern = models.CharField(max_length=100)
 	# SOA definitions
-	source = models.CharField(max_length=100)
-	contact = models.CharField(max_length=100)
+	source = models.CharField(max_length=100, null=False)
+	contact = models.CharField(max_length=100, null=False)
 	refresh = models.IntegerField(null=False, default=3600)
 	retry = models.IntegerField(null=False, default=600)
 	expire = models.IntegerField(null=False, default=84600)
