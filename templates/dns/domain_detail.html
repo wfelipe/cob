@@ -9,58 +9,74 @@ TTL: {{ domain.ttl }}
 
 <!-- serial list -->
 <form action="/dns/domains/compare/" method="post">
-  <input type="hidden" name="domain" value="{{ domain }}" />
-  <table border="1">
-    <th>Serial</th>
-    <th>Start Date</th>
-    <th>End Date</th>
-    <th></th>
-    <th></th>
-{% for serial in serials %}
-    <tr>
-      <td>{{ serial.serial }}</td>
-      <td>{{ serial.start_date }}</td>
-      <td>{{ serial.end_date }}</td>
-      <td><input type="radio" name="serial1" value="{{ serial.serial }}" /></td>
-      <td><input type="radio" name="serial2" value="{{ serial.serial }}" /></td>
-    </tr>
-{% endfor %}
-  </table>
-  <input type="submit" value="Compare" />
+	<input type="hidden" name="domain" value="{{ domain }}" />
+	<table border="1">
+		<thead>
+			<th>Serial</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th></th>
+			<th></th>
+		</thead>
+		<tbody>
+		{% for serial in serials %}
+			<tr>
+			<td>{{ serial.serial }}</td>
+			<td>{{ serial.start_date }}</td>
+			<td>{{ serial.end_date }}</td>
+			<td><input type="radio" name="serial1" value="{{ serial.serial }}" /></td>
+			<td><input type="radio" name="serial2" value="{{ serial.serial }}" /></td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	<input type="submit" value="Compare" />
 </form>
 
 <br/>
 
 <!-- record list -->
 {% if domain %}
-  {% if records %}
-<table border="1">
-  <th>Name</th>
-  <th>Type</th>
-  <th>RDATA</th>
-  <th>Entry Since</th>
-  <th>Entry Out</th>
-    {% for record in records.object_list %}
-  <tr>
-    <td>{{ record.name }}</td>
-    <td>{{ record.type }}</td>
-    <td>{{ record.content }}</td>
-    <td>{{ record.since_date }}</td>
-    <td>{{ record.out_date }}</td>
-  </tr>
-    {% endfor %}
-    </ul>
-</table>
+	{% if records %}
+		<table border="1">
+			<thead>
+				<th>Name</th>
+				<th>Type</th>
+				<th>RDATA</th>
+				<th>Entry Since</th>
+				<th>Entry Out</th>
+			</thead>
+			<tbody>
+		{% for record in records.object_list %}
+				<tr>
+					<td>{{ record.name }}</td>
+					<td>{{ record.type }}</td>
+					<td>{{ record.content }}</td>
+					<td>{{ record.since_date }}</td>
+					<td>{{ record.out_date }}</td>
+				</tr>
+			</tbody>
+		{% endfor %}
 
-    {% if records.has_previous %}
-        <a href="?page={{ records.previous_page_number }}">prev</a>
-    {% endif %}
-    {% if records.has_next %}
-        <a href="?page={{ records.next_page_number }}">next</a>
-    {% endif %}
-  {% else %}
-    <p>No records found</p>
-  {% endif %}
+		{% if domainserials.has_previous or domainserials.has_next %}
+		<tfoot>
+			<tr>
+				<td>
+				{% if records.has_previous %}
+					<a href="?page={{ records.previous_page_number }}">prev</a>
+				{% endif %}
+				</td>
+				<td>
+				{% if records.has_next %}
+					<a href="?page={{ records.next_page_number }}">next</a>
+				{% endif %}
+				</td>
+			</tr>
+		</table>
+		{% endif %}
+	{% else %}
+		<p>No records found</p>
+	{% endif %}
 {% else %}
-  <p>No domain found</p>
+	<p>No domain found</p>
 {% endif %}

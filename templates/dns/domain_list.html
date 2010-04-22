@@ -24,7 +24,7 @@
 		{% endfor %}
 		</tbody>
 
-		{% if domainserials.has_previous || domainserials.has_next %}
+		{% if domainserials.has_previous or domainserials.has_next %}
 		<tfoot>
 			<tr>
 				<td>
@@ -43,5 +43,5 @@
 		{% endif %}
 	</table>
 {% else %}
-    <p>No domains are available.</p>
+	<p>No domains are available.</p>
 {% endif %}

@@ -2,45 +2,52 @@ Domain: {{ domain }}
 Comparing serial {{ serials.0.serial }} against {{ serials.1.serial }}
 
 {% if domain %}
-New Records
-<table border="1">
-  <th>Name</th>
-  <th>Type</th>
-  <th>RDATA</th>
-  <th>Entry Since</th>
-  <th>Entry Out</th>
-  {% if new_records %}
-    {% for record in new_records %}
-  <tr>
-    <td>{{ record.name }}</td>
-    <td>{{ record.type }}</td>
-    <td>{{ record.content }}</td>
-    <td>{{ record.since_date }}</td>
-    <td>{{ record.out_date }}</td>
-  </tr>
-    {% endfor %}
-</table>
-  {% endif %}
+	New Records
+	<table border="1">
+		<thead>
+			<th>Name</th>
+			<th>Type</th>
+			<th>RDATA</th>
+			<th>Entry Since</th>
+			<th>Entry Out</th>
+	{% if new_records %}
+		<tbody>
+		{% for record in new_records %}
+			<tr>
+				<td>{{ record.name }}</td>
+				<td>{{ record.type }}</td>
+				<td>{{ record.content }}</td>
+				<td>{{ record.since_date }}</td>
+				<td>{{ record.out_date }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+		</table>
+	{% endif %}
 
-Removed Records
-<table border="1">
-  <th>Name</th>
-  <th>Type</th>
-  <th>RDATA</th>
-  <th>Entry Since</th>
-  <th>Entry Out</th>
-  {% if rm_records %}
-    {% for record in rm_records %}
-  <tr>
-    <td>{{ record.name }}</td>
-    <td>{{ record.type }}</td>
-    <td>{{ record.content }}</td>
-    <td>{{ record.since_date }}</td>
-    <td>{{ record.out_date }}</td>
-  </tr>
-    {% endfor %}
-</table>
-  {% endif %}
+	Removed Records
+	<table border="1">
+		<thead>
+			<th>Name</th>
+			<th>Type</th>
+			<th>RDATA</th>
+			<th>Entry Since</th>
+			<th>Entry Out</th>
+		</thead>
+		{% if rm_records %}
+			<tbody>
+			{% for record in rm_records %}
+				<tr>
+					<td>{{ record.name }}</td>
+					<td>{{ record.type }}</td>
+					<td>{{ record.content }}</td>
+					<td>{{ record.since_date }}</td>
+					<td>{{ record.out_date }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		{% endif %}
+	</table>
 {% else %}
-  <p>No domain found</p>
+	<p>No domain found</p>
 {% endif %}
