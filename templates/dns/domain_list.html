@@ -1,27 +1,47 @@
 {% if domainserials %}
-<a href=new>new</a>
-total: {{ total }}
-<table border="1">
-  <th>Domain</th>
-  <th>Current Serial</th>
-  <th>Start</th>
-  <th>End</th>
-    {% for ds in domainserials.object_list %}
-  <tr>
-    <td><a href="/dns/domains/{{ ds.domain.id }}/">{{ ds.domain }}</a></td>
-    <td>{{ ds.serial }}</td>
-    <td>{{ ds.serial.start_date }}</td>
-    <td>{{ ds.serial.end_date }}</td>
-  </tr>
-    {% endfor %}
-</table>
+	<a href=new>new</a>
 
-    {% if domainserials.has_previous %}
-        <a href="?page={{ domainserials.previous_page_number }}">prev</a>
-    {% endif %}
-    {% if domainserials.has_next %}
-        <a href="?page={{ domainserials.next_page_number }}">next</a>
-    {% endif %}
+	<table border="1">
+		<caption>total: {{ total }}</caption>
+
+		<thead>
+			<tr>
+				<th>Domain</th>
+				<th>Current Serial</th>
+				<th>Start</th>
+				<th>End</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		{% for ds in domainserials.object_list %}
+		<tr>
+			<td><a href="/dns/domains/{{ ds.domain.id }}/">{{ ds.domain }}</a></td>
+			<td>{{ ds.serial }}</td>
+			<td>{{ ds.serial.start_date }}</td>
+			<td>{{ ds.serial.end_date }}</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+
+		{% if domainserials.has_previous || domainserials.has_next %}
+		<tfoot>
+			<tr>
+				<td>
+				{% if domainserials.has_previous %}
+					<a href="?page={{ domainserials.previous_page_number }}">prev</a>
+				{% endif %}
+				</td>
+				<td colspan="2">&nbsp;</td>
+				<td>
+				{% if domainserials.has_next %}
+					<a href="?page={{ domainserials.next_page_number }}">next</a>
+				{% endif %}
+				</td>
+			</tr>
+		</tfoot>
+		{% endif %}
+	</table>
 {% else %}
     <p>No domains are available.</p>
 {% endif %}
