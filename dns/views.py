@@ -18,7 +18,6 @@ def domain_list(request):
 		ds = paginator.page(page)
 	except (EmptyPage, InvalidPage):
 		ds = paginator.page(paginator.num_pages)
-	print ds
 	return render_to_response('dns/domain_list.html', {
 		'domainserials': ds,
 		'total': paginator.count,
