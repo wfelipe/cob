@@ -15,7 +15,7 @@ class Serial (models.Model):
 	domain = models.ForeignKey('Domain', null=False)
 	serial = models.IntegerField(null=False)
 	start_date = models.DateTimeField()
-	end_date = models.DateTimeField()
+	end_date = models.DateTimeField(default=datetime.datetime.now)
 
 	class Meta:
 		unique_together = (("domain", "serial"),)
@@ -24,7 +24,7 @@ class Serial (models.Model):
 		return str(self.serial)
 
 class Domain (models.Model):
-	name = models.CharField(max_length=100, null=False)
+	name = models.CharField(max_length=100, null=False, unique=True, blank=False)
 	# pattern to create serials
 	# the goal is to be YYYYMMDDxx (where xx is incremental)
 	serial_pattern = models.CharField(max_length=100)

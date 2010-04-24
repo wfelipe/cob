@@ -2,9 +2,12 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from cob.dns.models import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from cob.dns.models import *
+from cob.dns.utils import *
+from datetime import datetime
+from django.db import transaction
 
 @login_required
 def domain_list(request):
@@ -30,7 +33,7 @@ def domain_detail(request, domain_id):
 	domainserial = DomainSerial.objects.get(domain=domain)
 	records = Record.objects.filter(domain=domain)
 	records = records.filter(out_date__gt = domainserial.serial.start_date)
-	records = records.filter(since_date__lt = domainserial.serial.end_date)
+	records = records.filter(since_date__lte = domainserial.serial.end_date)
 	paginator = Paginator(records, 20)
 
 	try:
@@ -71,13 +74,15 @@ def domain_compare(request):
 	})
 
 @login_required
+@transaction.commit_on_success
 def domain_new(request):
 	if request.method != 'POST':
 		return render_to_response('dns/domain_new.html', {})
-	# POST is left
-	post = request.POST
-	# TODO there should be a better way...
+
 	domain = Domain()
+	# POST is left
+	# TODO there should be a better way...
+	post = request.POST
 	if post['name']: domain.name = post['name']
 	if post['serial_pattern']: domain.serial_pattern = post['serial_pattern']
 	if post['source']: domain.source = post['source']
@@ -87,6 +92,20 @@ def domain_new(request):
 	if post['expire']: domain.expire = post['expire']
 	if post['ttl']: domain.ttl = post['ttl']
 	domain.save()
+
+	nameservers = post.getlist ('nameservers[]')
+
+	# also create nameservers
+	for ns in nameservers:
+		ns_rr = create_record(domain, domain, 'NS', ns)
+		ns_rr.save()
+
+	serial = Serial(domain=domain,
+		serial=generate_serial(0),
+		start_date=datetime.now())
+	serial.save()
+	domainserial = DomainSerial(domain=domain, serial=serial)
+	domainserial.save()
 
 	return render_to_response('dns/domain_new.html', {
 		'method': 'post',
