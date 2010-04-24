@@ -5,7 +5,7 @@ class DomainAdmin(admin.ModelAdmin):
 	list_display = ['name']
 
 class RecordAdmin(admin.ModelAdmin):
-	list_display = ['name', 'domain']
+	list_display = ['name', 'type', 'domain', 'content']
 
 class SerialAdmin(admin.ModelAdmin):
 	list_display = ['serial', 'domain']

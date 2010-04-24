@@ -87,10 +87,10 @@ def domain_new(request):
 	if post['serial_pattern']: domain.serial_pattern = post['serial_pattern']
 	if post['source']: domain.source = post['source']
 	if post['contact']: domain.contact = post['contact']
-	if post['refresh']: domain.contact = post['refresh']
-	if post['retry']: domain.retry = post['retry']
-	if post['expire']: domain.expire = post['expire']
-	if post['ttl']: domain.ttl = post['ttl']
+	if post['refresh']: domain.contact = int(post['refresh'])
+	if post['retry']: domain.retry = int(post['retry'])
+	if post['expire']: domain.expire = int(post['expire'])
+	if post['ttl']: domain.ttl = int(post['ttl'])
 	domain.save()
 
 	nameservers = post.getlist ('nameservers[]')
@@ -106,6 +106,9 @@ def domain_new(request):
 	serial.save()
 	domainserial = DomainSerial(domain=domain, serial=serial)
 	domainserial.save()
+
+	soa_rr = create_record(domain, domain, 'SOA', generate_soa(domainserial))
+	soa_rr.save()
 
 	return render_to_response('dns/domain_new.html', {
 		'method': 'post',
