@@ -17,7 +17,6 @@ def create_record(domain, name, type, content, ttl=3600, prio=0):
 	return record
 
 def generate_soa(domainserial):
-	print domainserial.domain.ttl
 	return "%s. %s. %d %d %d %d %d" % (
 		domainserial.domain.source,
 		domainserial.domain.contact,
