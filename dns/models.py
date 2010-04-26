@@ -18,7 +18,7 @@ class Serial (models.Model):
 	end_date = models.DateTimeField(default=datetime.datetime.now)
 
 	class Meta:
-		unique_together = (("domain", "serial"),)
+		unique_together = [("domain", "serial")]
 
 	def __unicode__(self):
 		return str(self.serial)
@@ -59,4 +59,4 @@ class Record (models.Model):
 #
 class DomainSerial (models.Model):
 	domain = models.ForeignKey(Domain, null=False, unique=True)
-	serial = models.ForeignKey(Serial, null=False)
+	serial = models.ForeignKey(Serial, null=False, unique=True)
