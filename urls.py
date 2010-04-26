@@ -24,8 +24,5 @@ urlpatterns = patterns('',
         { 'document_root': 'templates/stc' }),
 
     # cob urls
-    (r'^dns/domains/$', 'cob.dns.views.domain_list'),
-    (r'^dns/domains/(?P<domain_id>\d+)/$', 'cob.dns.views.domain_detail'),
-    (r'^dns/domains/compare/?$', 'cob.dns.views.domain_compare'),
-    (r'^dns/domains/new/?$', 'cob.dns.views.domain_new'),
+    (r'^dns/', include('cob.dns.urls')),
 )
