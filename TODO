@@ -1,2 +1,14 @@
 - add nameserver to domain creation
 - auto create serial in domain creation
+
+Apps
+=====
+
+- inventory
+	- servers
+	- pools of servers
+	- services
+	- systems
+	- relationship between systems/services
+- puppet (using inventory)
+- monitoring (using inventory)
