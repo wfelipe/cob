@@ -76,7 +76,7 @@ def domain_compare(request):
 
 @login_required
 @transaction.commit_on_success
-def domain_new_test(request):
+def domain_new(request):
 	msg = None
 	domain = Domain()
 	if request.method == 'POST':
