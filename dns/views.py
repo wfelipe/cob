@@ -89,7 +89,7 @@ def domain_new(request):
 	else:
 		form = DomainForm()
 
-	return render_to_response("dns/domain_new_test.html", {
+	return render_to_response("dns/domain_new.html", {
 		"form": form,
 		"msg": msg,
 	})
