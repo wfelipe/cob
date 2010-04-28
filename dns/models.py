@@ -27,7 +27,7 @@ class Domain (models.Model):
 	name = models.CharField(max_length=100, null=False, unique=True, blank=False)
 	# pattern to create serials
 	# the goal is to be YYYYMMDDxx (where xx is incremental)
-	serial_pattern = models.CharField(max_length=100)
+	serial_pattern = models.CharField(max_length=100, null=True, blank=True)
 	# SOA definitions
 	source = models.CharField(max_length=100, null=False)
 	contact = models.CharField(max_length=100, null=False)

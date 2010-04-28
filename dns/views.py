@@ -4,10 +4,11 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from cob.dns.models import *
-from cob.dns.utils import *
 from datetime import datetime
 from django.db import transaction
+from cob.dns.models import *
+from cob.dns.utils import *
+from cob.dns.forms import *
 
 @login_required
 def domain_list(request):
@@ -75,41 +76,20 @@ def domain_compare(request):
 
 @login_required
 @transaction.commit_on_success
-def domain_new(request):
-	if request.method != 'POST':
-		return render_to_response('dns/domain_new.html', {})
-
+def domain_new_test(request):
+	msg = None
 	domain = Domain()
-	# POST is left
-	# TODO there should be a better way...
-	post = request.POST
-	if post['name']: domain.name = post['name']
-	if post['serial_pattern']: domain.serial_pattern = post['serial_pattern']
-	if post['source']: domain.source = post['source']
-	if post['contact']: domain.contact = post['contact']
-	if post['refresh']: domain.contact = int(post['refresh'])
-	if post['retry']: domain.retry = int(post['retry'])
-	if post['expire']: domain.expire = int(post['expire'])
-	if post['ttl']: domain.ttl = int(post['ttl'])
-	domain.save()
+	if request.method == 'POST':
+		form = DomainForm(request.POST, instance=domain)
+		if form.is_valid():
+			form.save()
+			msg = 'saved.'
+		else:
+			msg = 'not saved.'
+	else:
+		form = DomainForm()
 
-	nameservers = post.getlist ('nameservers[]')
-
-	# also create nameservers
-	for ns in nameservers:
-		ns_rr = create_record(domain, domain, 'NS', ns)
-		ns_rr.save()
-
-	serial = Serial(domain=domain,
-		serial=generate_serial(0),
-		start_date=datetime.now())
-	serial.save()
-	domainserial = DomainSerial(domain=domain, serial=serial)
-	domainserial.save()
-
-	soa_rr = create_record(domain, domain, 'SOA', generate_soa(domainserial))
-	soa_rr.save()
-
-	return render_to_response('dns/domain_new.html', {
-		'method': 'post',
+	return render_to_response("dns/domain_new_test.html", {
+		"form": form,
+		"msg": msg,
 	})

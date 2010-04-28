@@ -1,50 +1,10 @@
-{{ method }}
-<form action="" method="post">
-	<table id="form-table">
-		<tr>
-			<td><label>Name:</label></td>
-			<td><input type="text" name="name" maxlength="100" /></td>
-		</tr>
-		<tr>
-			<td><label>Serial Pattern:</label></td>
-			<td><input type="text" name="serial_pattern" maxlength="100" /></td>
-		</tr>
-
-		<tr><td colspan="2" align="center">SOA</td></tr>
-		<tr>
-			<td><label>Source host:</label></td>
-			<td><input type="text" name="source" maxlength="100" /></td>
-		</tr>
-		<tr>
-			<td><label>Contact:</label></td>
-			<td><input type="text" name="contact" maxlength="100" /></td>
-		</tr>
-		<tr>
-			<td><label>Refresh:</label></td>
-			<td><input type="text" name="refresh" maxlength="100" value="3600" /></td>
-		</tr>
-		<tr>
-			<td><label>Retry:</label></td>
-			<td><input type="text" name="retry" maxlength="100" value="600" /></td>
-		</tr>
-		<tr>
-			<td><label>Expire:</label></td>
-			<td><input type="text" name="expire" maxlength="100" value="86400" /></td>
-		</tr>
-		<tr>
-			<td><label>TTL:</label></td>
-			<td><input type="text" name="ttl" maxlength="100" value="3600" /></td>
-		</tr>
-
-		<tr><td colspan="2" align="center">NameServers</td></tr>
-
-		<tr>
-			<td><input type="text" name="nameservers[]" size="15" maxlength="100" /></td>
-			<td><input type="text" name="nameservers[]" size="15" maxlength="100" /></td>
-		</tr>
-
+<form method="post" action="">
+	<table>
+{{ form.as_table }}
 		<tr>
 			<td><input type="submit" value="Create" /></td>
 		</tr>
 	</table>
 </form>
+
+{{ msg }}
