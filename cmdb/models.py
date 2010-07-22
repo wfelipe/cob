@@ -10,7 +10,7 @@ class ServerType(models.Model):
 		return str(self.name)
 
 class Server(models.Model):
-	name = models.CharField(max_length=255, null=False)
+	name = models.CharField(max_length=255, null=False, unique=True)
 	memory = models.IntegerField(null=False)
 	serial = models.CharField(max_length=255, null=False)
 	operating_system = models.ForeignKey('OperatingSystem', null=False)
@@ -24,6 +24,9 @@ class OperatingSystem(models.Model):
 	name = models.CharField(max_length=255, null=False)
 	version = models.CharField(max_length=16, null=False)
 
+	class Meta:
+		unique_together = [("name", "version")]
+
 	def __unicode__(self):
 		return str(self.name)
 
@@ -31,7 +34,7 @@ class OperatingSystem(models.Model):
 System
 """
 class System(models.Model):
-	name = models.CharField(max_length=255, null=False)
+	name = models.CharField(max_length=255, null=False, unique=True)
 	description = models.CharField(max_length=255, null=True)
 
 	def __unicode__(self):
@@ -43,6 +46,9 @@ class Component(models.Model):
 
 	system = models.ForeignKey('System', null=False)
 	servers = models.ManyToManyField(Server)
+
+	class Meta:
+		unique_together = [("name", "system")]
 
 	def __unicode__(self):
 		return str(self.name)
