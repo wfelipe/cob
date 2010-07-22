@@ -7,6 +7,5 @@ Modules
 -------
 
 * dns: a complete authoritative server administration, using a database as the backend. As the authoritative name server, PowerDNS will be easy to port. I will work as a versioning control, based on the serials, that will be able to see the difference between the serials, and even going back to the serials.
-* puppet: an administration to puppet
-* func: an administration to puppet
+* cmdb: a configuration management database module
 * any other ideia
