@@ -1,0 +1,19 @@
+{% if system_list %}
+	<table border="1">
+		<caption>total: {{ system_list.count }}</caption>
+
+		<thead>
+			<tr>
+				<th>Nome</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{% for system in system_list %}
+				<td><a href="/cmdb/system/{{ system.name }}/">{{ system.name }}</a></td>
+			{% endfor %}
+			</tr>
+		</tbody>
+{% else %}
+	<p>No systems are available.</p>
+{% endif %}

@@ -1,0 +1,22 @@
+{% if system and component_list %}
+	<table border="1">
+		<caption>Sistema: {{ system.name }}
+		Componentes: {{ component_list.count }}</caption>
+
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Qtde de Servidores</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{% for component in component_list %}
+				<td><a href="/cmdb/system/{{ system.name }}/{{ component.name }}/">{{ component.name }}</a></td>
+				<td>{{ component.servers.count }}</td>
+			{% endfor %}
+			</tr>
+		</tbody>
+{% else %}
+	<p>No system available.</p>
+{% endif %}
