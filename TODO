@@ -7,8 +7,8 @@ Apps
 - inventory
 	- servers
 	- pools of servers
-	- services
+	- components
 	- systems
-	- relationship between systems/services
+	- relationship between systems/components
 - puppet (using inventory)
 - monitoring (using inventory)

@@ -1,0 +1,21 @@
+{% if server_list %}
+	<table border="1">
+		<caption>total: {{ server_list.count }}</caption>
+
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Tipo</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{% for server in server_list %}
+				<td><a href="/cmdb/server/{{ server.name }}/">{{ server.name }}</a></td>
+				<td>{{ server.server_type }}</td>
+			{% endfor %}
+			</tr>
+		</tbody>
+{% else %}
+	<p>No servers are available.</p>
+{% endif %}
