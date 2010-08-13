@@ -2,16 +2,28 @@ from django.db import models
 """
 configuration items
 """
+class Manufacturer(models.Model):
+	name = models.CharField(max_length=255, null=False)
+
+	def __unicode__(self):
+		return str(self.name)
+
+class Architecture(models.Model):
+	name = models.CharField(max_length=255, null=False)
+
+	def __unicode__(self):
+		return str(self.name)
+
 class ServerType(models.Model):
 	name = models.CharField(max_length=255, null=False)
-	size = models.IntegerField()
+	manufacturer = models.ForeignKey('Manufacturer', null=True)
 
 	def __unicode__(self):
 		return str(self.name)
 
 class Server(models.Model):
 	name = models.CharField(max_length=255, null=False, unique=True)
-	memory = models.IntegerField(null=False)
+	memory = models.FloatField(null=False)
 	serial = models.CharField(max_length=255, null=False)
 	operating_system = models.ForeignKey('OperatingSystem', null=False)
 
@@ -23,9 +35,10 @@ class Server(models.Model):
 class OperatingSystem(models.Model):
 	name = models.CharField(max_length=255, null=False)
 	version = models.CharField(max_length=16, null=False)
+	architecture = models.ForeignKey('Architecture', null=False)
 
 	class Meta:
-		unique_together = [("name", "version")]
+		unique_together = [("name", "version", "architecture")]
 
 	def __unicode__(self):
 		return str(self.name)

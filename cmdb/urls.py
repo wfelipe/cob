@@ -7,5 +7,6 @@ urlpatterns = patterns('',
 
 	(r'^server/$', 'cob.cmdb.views.server_index'),
 	(r'^server/list/$', 'cob.cmdb.views.server_list'),
+	(r'^server/post/$', 'cob.cmdb.views.receive_post'),
 	(r'^server/(?P<server_name>[^/]+)/$', 'cob.cmdb.views.server_detail'),
 )
