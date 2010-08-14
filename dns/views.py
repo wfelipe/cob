@@ -6,9 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.db import transaction
-from cob.dns.models import *
-from cob.dns.utils import *
-from cob.dns.forms import *
+from dns.models import *
+from dns.utils import *
+from dns.forms import *
 
 @login_required
 def domain_list(request):

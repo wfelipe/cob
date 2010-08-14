@@ -1,4 +1,4 @@
-from cob.dns.models import *
+from dns.models import *
 from django.contrib import admin
 
 class DomainAdmin(admin.ModelAdmin):

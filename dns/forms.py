@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from cob.dns.models import *
+from dns.models import *
 
 class DomainForm(ModelForm):
 	class Meta:

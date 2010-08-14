@@ -1,4 +1,4 @@
-from cob.dns.models import *
+from dns.models import *
 import datetime
 
 def generate_serial(last, pattern=''):
