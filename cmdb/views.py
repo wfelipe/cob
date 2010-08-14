@@ -51,7 +51,7 @@ def receive_post(request):
 		return HttpResponse('Non privilege user')
 
 	# physical or virtual
-	if facts.['is_virtual']:
+	if facts['is_virtual']:
 		manufacturer_name = facts['virtual']
 	else:
 		manufacturer_name = facts['manufacturer']
