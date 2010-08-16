@@ -1,5 +1,20 @@
 from django.shortcuts import get_object_or_404, render_to_response
-from cob.cmdb.models import *
+from django.db import transaction
+from cmdb.models import *
+from cmdb.helpers import *
+
+def cmdb_index(request):
+	return render_to_response('cmdb/index.html')
+
+def manufacturer_index(request):
+	manufacturer_list = Manufacturer.objects.all()
+	return render_to_response('cmdb/manufacturer/manufacturer.html',
+		{ 'manufacturer_list': manufacturer_list, })
+
+def manufacturer_detail(request, manufacturer_name):
+	manufacturer = get_object_or_404(Manufacturer, name=manufacturer_name)
+	return render_to_response('cmdb/manufacturer/manufacturer_detail.html',
+		{ 'manufacturer': manufacturer, })
 
 def system_index(request):
 	return system_list(request)
@@ -41,9 +56,12 @@ def server_detail(request, server_name):
 		{ 'server': server,
 		})
 
-def receive_post(request):
+@transaction.commit_on_success
+def receive_facts(request):
 	from django.http import HttpResponse
 
+	if request.META['REQUEST_METHOD'] != 'POST':
+		return HttpResponse('Only POST allowed')
 	facts = request.POST
 
 	# facter needs to be run under root
@@ -51,63 +69,53 @@ def receive_post(request):
 		return HttpResponse('Non privilege user')
 
 	# physical or virtual
-	if facts['is_virtual']:
+	if facts['is_virtual'] == 'true':
 		manufacturer_name = facts['virtual']
 	else:
 		manufacturer_name = facts['manufacturer']
 
 	# manufacturer
-	try:
-		manufacturer = Manufacturer.objects.get(name=manufacturer_name)
-	except Manufacturer.DoesNotExist:
-		manufacturer = Manufacturer(name=manufacturer_name)
-		manufacturer.save()
+	manufacturer = get_object_or_create(Manufacturer, name=manufacturer_name)
 	
 	# server type
-	try:
-		server_type = ServerType.objects.get(name=facts['productname'],
-			manufacturer=manufacturer)
-	except ServerType.DoesNotExist:
-		server_type = ServerType(name=facts['productname'],
-			manufacturer=manufacturer)
-		server_type.save()
+	server_type = get_object_or_create(ServerType, name=facts['productname'],
+		manufacturer=manufacturer)
 
 	# architecture
-	try:
-		os_arch = Architecture.objects.get(name=facts['architecture'])
-	except Architecture.DoesNotExist:
-		os_arch = Architecture(name=facts['architecture'])
-		os_arch.save()
+	architecture = get_object_or_create(Architecture, name=facts['architecture'])
 
 	# operating system
-	try:
-		operatingsystem = OperatingSystem.objects.get(name=facts['operatingsystem'], version=facts['operatingsystemrelease'], architecture=os_arch)
-	except OperatingSystem.DoesNotExist:
-		operatingsystem = OperatingSystem(name=facts['operatingsystem'], version=facts['operatingsystemrelease'], architecture=os_arch)
-		operatingsystem.save()
+	operatingsystem = get_object_or_create(OperatingSystem, name=facts['operatingsystem'], version=facts['operatingsystemrelease'], architecture=architecture)
 
 	# server
-	server = Server()
-	server.name = facts['hostname']
-	# TODO
-	server.memory = facts['memorysize'].split()[0]
+	server = get_object_or_none(Server, name=facts['hostname'])
+	if not server:
+		server = Server()
+		server.name = facts['hostname']
+
+	server.memory = normalize_memory(facts['memorysize'])
 	server.serial = facts['serialnumber']
 	server.operating_system = operatingsystem
 	server.server_type = server_type
 	server.save()
 
-	'''
-	server type:
-		manufacturer -> Dell Inc.
-		hardwaremodel -> x86_64
-		productname -> PowerEdge R710
-	server:
-		serialnumber -> 89TSNK1
-		operatingsystem -> RedHat
-		lsbdistid -> RedHatEnterpriseServer
-		operatingsystemrelease -> 5.4
-		architecture -> x86_64
-		memorysize -> 47.14 GB
-	'''
+	# network interfaces
+	for nic in facts['interfaces'].split(','):
+		if facts.has_key('ipaddress_' + nic):
+			# find network/create
+			network = get_object_or_none(Network,
+				network=facts['network_' + nic],
+				netmask=facts['netmask_' + nic]
+			)
+			if not network:
+				network = create_network(facts['network_' + nic], facts['netmask_' + nic])
+			# find ip address
+			# TODO - should not create if network creates all ip address
+				ipaddress = get_object_or_create(InternetAddress, address=facts['ipaddress_' + nic],
+					network=network)
+			# find nic/create
+				networkinterface = get_object_or_create(NetworkInterface,
+					name=nic, macaddress=facts['macaddress_' + nic],
+					ipaddress=ipaddress, server=server)
 
 	return HttpResponse('OK')

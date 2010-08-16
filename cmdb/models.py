@@ -43,6 +43,29 @@ class OperatingSystem(models.Model):
 	def __unicode__(self):
 		return str(self.name)
 
+class NetworkInterface(models.Model):
+	name = models.CharField(max_length=8, null=False)
+	macaddress = models.CharField(max_length=11)
+
+	ipaddress = models.ForeignKey('InternetAddress', unique=True)
+	server = models.ForeignKey('Server', null=False)
+
+	def __unicode__(self):
+		return str(self.name)
+
+class InternetAddress(models.Model):
+	address = models.CharField(max_length=255, null=False, unique=True)
+
+	network = models.ForeignKey('Network', null=False)
+
+class Network(models.Model):
+	name = models.CharField(max_length=255, null=False)
+	netmask = models.CharField(max_length=255, null=False)
+	network = models.CharField(max_length=255, null=False)
+
+	def __unicode__(self):
+		return str(self.name)
+
 """
 System
 """

@@ -5,25 +5,25 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^cob/', include('cob.foo.urls')),
+	# Example:
+	# (r'^cob/', include('cob.foo.urls')),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+	# to INSTALLED_APPS to enable admin documentation:
+	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    (r'^admin/', include(admin.site.urls)),
+	# Uncomment the next line to enable the admin:
+	(r'^admin/', include(admin.site.urls)),
 
-    # login
-    (r'^accounts/login/$', 'django.contrib.auth.views.login',
-      { 'template_name': 'login.html' }),
+	# login
+	(r'^accounts/login/$', 'django.contrib.auth.views.login',
+		{ 'template_name': 'login.html' }),
 
-    # static content
-    (r'^stc/(?P<path>.*)$', 'django.views.static.serve',
-        { 'document_root': 'templates/stc' }),
+	# static content
+	(r'^stc/(?P<path>.*)$', 'django.views.static.serve',
+		{ 'document_root': 'templates/stc' }),
 
-    # cob urls
-    (r'^dns/', include('cob.dns.urls')),
-    (r'^cmdb/', include('cob.cmdb.urls')),
+	# cob urls
+	(r'^dns/', include('dns.urls')),
+	(r'^cmdb/', include('cmdb.urls')),
 )

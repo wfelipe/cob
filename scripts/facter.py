@@ -17,13 +17,12 @@ facts = dict()
 #	print fact.split(': ', 1)
 facts = dict([ fact.strip('\n').replace('"', '').strip().split(': ', 1) for fact in facterp.stdout ])
 
-print facts
 #import sys
 #sys.exit(0)
 
 conn = httplib.HTTPConnection("localhost:8000")
 params = urllib.urlencode(facts)
-conn.request("POST", "/cmdb/server/post/", params)
+conn.request("POST", "/cmdb/server/facts/", params)
 resp = conn.getresponse()
 #print resp.status, resp.reason
 

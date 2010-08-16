@@ -1,0 +1,19 @@
+{% if manufacturer_list %}
+	<table border="1">
+		<caption>total: {{ manufacturer_list.count }}</caption>
+
+		<thead>
+			<tr>
+				<th>Nome</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{% for manufacturer in manufacturer_list %}
+				<td><a href="/cmdb/manufacturer/{{ manufacturer.name }}/">{{ manufacturer.name }}</a></td>
+			{% endfor %}
+			</tr>
+		</tbody>
+{% else %}
+	<p>No manufacturers are available.</p>
+{% endif %}

@@ -4,11 +4,9 @@
 Apps
 =====
 
-- inventory
-	- servers
-	- pools of servers
-	- components
-	- systems
-	- relationship between systems/components
-- puppet (using inventory)
-- monitoring (using inventory)
+dns:
+
+cmdb:
+	- store network address as integer
+	- when creating a network, creates all ip address related to the network
+	- allocates the first and the last ip address in a network as busy (network and broadcast address)
