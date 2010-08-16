@@ -8,12 +8,12 @@ def cmdb_index(request):
 
 def manufacturer_index(request):
 	manufacturer_list = Manufacturer.objects.all()
-	return render_to_response('cmdb/manufacturer/manufacturer.html',
+	return render_to_response('cmdb/manufacturer/list.html',
 		{ 'manufacturer_list': manufacturer_list, })
 
 def manufacturer_detail(request, manufacturer_name):
 	manufacturer = get_object_or_404(Manufacturer, name=manufacturer_name)
-	return render_to_response('cmdb/manufacturer/manufacturer_detail.html',
+	return render_to_response('cmdb/manufacturer/detail.html',
 		{ 'manufacturer': manufacturer, })
 
 def system_index(request):
@@ -21,13 +21,13 @@ def system_index(request):
 
 def system_list(request):
 	system_list = System.objects.all()
-	return render_to_response('cmdb/system/system_list.html',
+	return render_to_response('cmdb/system/list.html',
 		{ 'system_list': system_list, })
 
 def system_detail(request, system_name):
 	system = get_object_or_404(System, name=system_name)
 	component_list = Component.objects.filter(system=system)
-	return render_to_response('cmdb/system/system_detail.html',
+	return render_to_response('cmdb/system/detail.html',
 		{ 'system': system,
 			'component_list': component_list,
 		})
@@ -35,7 +35,7 @@ def system_detail(request, system_name):
 def system_component(request, system_name, component_name):
 	system = get_object_or_404(System, name=system_name)
 	component = get_object_or_404(Component, name=component_name, system=system)
-	return render_to_response('cmdb/system/system_component.html',
+	return render_to_response('cmdb/system/component.html',
 		{ 'system': system,
 			'component': component,
 		})
@@ -46,13 +46,13 @@ def server_index(request):
 
 def server_list(request):
 	server_list = Server.objects.all()
-	return render_to_response('cmdb/server/server_list.html',
+	return render_to_response('cmdb/server/list.html',
 		{ 'server_list': server_list,
 		})
 
 def server_detail(request, server_name):
 	server = get_object_or_404(Server, name=server_name)
-	return render_to_response('cmdb/server/server_detail.html',
+	return render_to_response('cmdb/server/detail.html',
 		{ 'server': server,
 		})
 
