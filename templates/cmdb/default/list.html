@@ -1,0 +1,19 @@
+{% if list and type %}
+	<table border="1">
+		<caption>total: {{ list.count }}</caption>
+
+		<thead>
+			<tr>
+				<th>Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in list %}
+			<tr>
+				<td><a href="/cmdb/{{ type }}/{{ item.name }}/">{{ item.name }}</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+{% else %}
+	<p>No {{ type }}s are available.</p>
+{% endif %}
