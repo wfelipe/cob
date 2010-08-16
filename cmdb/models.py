@@ -25,8 +25,9 @@ class Server(models.Model):
 	name = models.CharField(max_length=255, null=False, unique=True)
 	memory = models.FloatField(null=False)
 	serial = models.CharField(max_length=255, null=False)
-	operating_system = models.ForeignKey('OperatingSystem', null=False)
+	virtual = models.BooleanField(null=False)
 
+	operating_system = models.ForeignKey('OperatingSystem', null=False)
 	server_type = models.ForeignKey('ServerType', null=False)
 
 	def __unicode__(self):
@@ -57,6 +58,9 @@ class InternetAddress(models.Model):
 	address = models.CharField(max_length=255, null=False, unique=True)
 
 	network = models.ForeignKey('Network', null=False)
+
+	def __unicode__(self):
+		return str(self.address)
 
 class Network(models.Model):
 	name = models.CharField(max_length=255, null=False)

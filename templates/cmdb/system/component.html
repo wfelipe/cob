@@ -9,11 +9,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
 			{% for server in component.servers.all %}
+			<tr>
 				<td><a href="/cmdb/server/{{ server.name }}/">{{ server.name }}</a></td>
-			{% endfor %}
 			</tr>
+			{% endfor %}
 		</tbody>
 {% else %}
 	<p>No system available.</p>

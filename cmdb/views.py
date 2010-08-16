@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, _get_queryset
 from django.db import transaction
 from cmdb.models import *
 from cmdb.helpers import *
@@ -6,15 +6,24 @@ from cmdb.helpers import *
 def cmdb_index(request):
 	return render_to_response('cmdb/index.html')
 
-def manufacturer_index(request):
-	manufacturer_list = Manufacturer.objects.all()
-	return render_to_response('cmdb/manufacturer/list.html',
-		{ 'manufacturer_list': manufacturer_list, })
+def default_index(request, klass):
+	queryset = _get_queryset(globals()[klass])
+	default_list = queryset.all()
+	return render_to_response('cmdb/default/list.html',
+		{ 'list': default_list,
+			'type': klass.lower(),
+		})
 
-def manufacturer_detail(request, manufacturer_name):
-	manufacturer = get_object_or_404(Manufacturer, name=manufacturer_name)
-	return render_to_response('cmdb/manufacturer/detail.html',
-		{ 'manufacturer': manufacturer, })
+def default_detail(request, klass, default_name):
+	queryset = _get_queryset(globals()[klass])
+	default = queryset.get(name=default_name)
+
+	attrs = default.__dict__
+	return render_to_response('cmdb/default/detail.html',
+		{ 'item': default,
+			'type': klass.lower(),
+			'attributes': attrs,
+		})
 
 def system_index(request):
 	return system_list(request)
@@ -68,18 +77,26 @@ def receive_facts(request):
 	if facts['id'] != 'root':
 		return HttpResponse('Non privilege user')
 
-	# physical or virtual
-	if facts['is_virtual'] == 'true':
-		manufacturer_name = facts['virtual']
-	else:
-		manufacturer_name = facts['manufacturer']
+	# server - continues above
+	server = get_object_or_none(Server, name=facts['hostname'])
+	if not server:
+		server = Server()
+		server.name = facts['hostname']
 
-	# manufacturer
-	manufacturer = get_object_or_create(Manufacturer, name=manufacturer_name)
-	
-	# server type
-	server_type = get_object_or_create(ServerType, name=facts['productname'],
-		manufacturer=manufacturer)
+	# physical or virtual
+	if facts['is_virtual'] == 'false': # physical
+		# manufacturer
+		manufacturer = get_object_or_create(Manufacturer, name=facts['manufacturer'])
+
+		# server type
+		server_type = get_object_or_create(ServerType, name=facts['productname'],
+			manufacturer=manufacturer)
+
+		server.virtual = False
+		server.serial = facts['serialnumber']
+	else: # virtual
+		server.virtual = True
+		server_type = get_object_or_create(ServerType, name=facts['virtual'])
 
 	# architecture
 	architecture = get_object_or_create(Architecture, name=facts['architecture'])
@@ -87,14 +104,8 @@ def receive_facts(request):
 	# operating system
 	operatingsystem = get_object_or_create(OperatingSystem, name=facts['operatingsystem'], version=facts['operatingsystemrelease'], architecture=architecture)
 
-	# server
-	server = get_object_or_none(Server, name=facts['hostname'])
-	if not server:
-		server = Server()
-		server.name = facts['hostname']
 
 	server.memory = normalize_memory(facts['memorysize'])
-	server.serial = facts['serialnumber']
 	server.operating_system = operatingsystem
 	server.server_type = server_type
 	server.save()

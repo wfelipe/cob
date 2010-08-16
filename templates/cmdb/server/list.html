@@ -9,12 +9,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
 			{% for server in server_list %}
+			<tr>
 				<td><a href="/cmdb/server/{{ server.name }}/">{{ server.name }}</a></td>
 				<td>{{ server.server_type }}</td>
-			{% endfor %}
 			</tr>
+			{% endfor %}
 		</tbody>
 {% else %}
 	<p>No servers are available.</p>

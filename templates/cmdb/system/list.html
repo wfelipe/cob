@@ -8,11 +8,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
 			{% for system in system_list %}
+			<tr>
 				<td><a href="/cmdb/system/{{ system.name }}/">{{ system.name }}</a></td>
-			{% endfor %}
 			</tr>
+			{% endfor %}
 		</tbody>
 {% else %}
 	<p>No systems are available.</p>
