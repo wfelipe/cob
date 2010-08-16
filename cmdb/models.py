@@ -46,7 +46,7 @@ class OperatingSystem(models.Model):
 
 class NetworkInterface(models.Model):
 	name = models.CharField(max_length=8, null=False)
-	macaddress = models.CharField(max_length=11)
+	macaddress = models.CharField(max_length=18)
 
 	ipaddress = models.ForeignKey('InternetAddress', unique=True)
 	server = models.ForeignKey('Server', null=False)
