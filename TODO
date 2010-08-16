@@ -10,3 +10,4 @@ cmdb:
 	- store network address as integer
 	- when creating a network, creates all ip address related to the network
 	- allocates the first and the last ip address in a network as busy (network and broadcast address)
+	- collect data from the real server and relate with the virtual machines
