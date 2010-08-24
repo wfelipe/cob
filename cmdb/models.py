@@ -71,6 +71,13 @@ class Network(models.Model):
 		return str(self.name)
 
 """
+Puppet Class, automation
+"""
+class PuppetClass(models.Model):
+	name = models.CharField(max_length=255, null=False, unique=True)
+	description = models.CharField(max_length=255)
+
+"""
 System
 """
 class System(models.Model):
@@ -79,17 +86,3 @@ class System(models.Model):
 
 	def __unicode__(self):
 		return str(self.name)
-
-class Component(models.Model):
-	name = models.CharField(max_length=255, null=False)
-	description = models.CharField(max_length=255, null=True)
-
-	system = models.ForeignKey('System', null=False)
-	servers = models.ManyToManyField(Server)
-
-	class Meta:
-		unique_together = [("name", "system")]
-
-	def __unicode__(self):
-		return str(self.name)
-
