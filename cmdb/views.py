@@ -102,7 +102,7 @@ def receive_facts(request):
 	architecture = get_object_or_create(Architecture, name=facts['architecture'])
 
 	# operating system
-	operatingsystem = get_object_or_create(OperatingSystem, name=facts['operatingsystem'], version=facts['operatingsystemrelease'], architecture=architecture)
+	operatingsystem = get_object_or_create(OperatingSystem, name=facts['operatingsystem'], version=facts['lsbdistrelease'], architecture=architecture)
 
 
 	server.memory = normalize_memory(facts['memorysize'])
