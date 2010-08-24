@@ -2,7 +2,6 @@ from cmdb.models import *
 from django.contrib import admin
 
 admin.site.register(System)
-admin.site.register(Component)
 
 class OperatingSystemAdmin(admin.ModelAdmin):
 	list_display = ['name', 'version']

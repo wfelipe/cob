@@ -20,7 +20,6 @@ urlpatterns = patterns('',
 
 	(r'^system/$', 'cmdb.views.system_index'),
 	(r'^system/(?P<system_name>[^/]+)/$', 'cmdb.views.system_detail'),
-	(r'^system/(?P<system_name>[^/]+)/(?P<component_name>[^/]+)/$', 'cmdb.views.system_component'),
 
 	(r'^server/$', 'cmdb.views.server_index'),
 	(r'^server/list/$', 'cmdb.views.server_list'),

@@ -35,20 +35,9 @@ def system_list(request):
 
 def system_detail(request, system_name):
 	system = get_object_or_404(System, name=system_name)
-	component_list = Component.objects.filter(system=system)
 	return render_to_response('cmdb/system/detail.html',
 		{ 'system': system,
-			'component_list': component_list,
 		})
-
-def system_component(request, system_name, component_name):
-	system = get_object_or_404(System, name=system_name)
-	component = get_object_or_404(Component, name=component_name, system=system)
-	return render_to_response('cmdb/system/component.html',
-		{ 'system': system,
-			'component': component,
-		})
-
 
 def server_index(request):
 	return server_list(request)
