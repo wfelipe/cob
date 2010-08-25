@@ -14,16 +14,16 @@ MANAGERS = ADMINS
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'sqlite3',
-		'NAME': 'cob.data',
+		'ENGINE': 'mysql',
+		'NAME': 'cob',
 		'USER': 'cob',
 		'PASSWORD': 'cob',
-		'HOST': '',
+		'HOST': 'localhost',
 		'PORT': '',
 		'OPTIONS': {
-#			"init_command": "SET storage_engine=INNODB",
+			"init_command": "SET storage_engine=INNODB",
 		},
-}
+	}
 }
 
 # Local time zone for this installation. Choices can be found here:
