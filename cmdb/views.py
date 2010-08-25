@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseNotFound
 from cmdb.models import *
 from cmdb.helpers import *
 
+import datetime
+
 def cmdb_index(request):
 	return render_to_response('cmdb/index.html')
 
@@ -71,6 +73,7 @@ def receive_facts(request):
 
 	# server - continues above
 	server = get_object_or_none(Server, name=facts['hostname'])
+	server.updated = datetime.datetime.now()
 	if not server:
 		server = Server()
 		server.name = facts['hostname']
@@ -96,7 +99,6 @@ def receive_facts(request):
 	# operating system
 	operatingsystem = get_object_or_create(OperatingSystem, name=facts['operatingsystem'], version=facts['lsbdistrelease'], architecture=architecture)
 
-
 	server.memory = normalize_memory(facts['memorysize'])
 	server.operating_system = operatingsystem
 	server.server_type = server_type
@@ -116,7 +118,7 @@ def receive_facts(request):
 			# TODO - should not create if network creates all ip address
 				ipaddress = get_object_or_create(InternetAddress, address=facts['ipaddress_' + nic],
 					network=network)
-			# find nic/create
+				# find nic/create
 				networkinterface = get_object_or_create(NetworkInterface,
 					name=nic, macaddress=facts['macaddress_' + nic],
 					ipaddress=ipaddress, server=server)
