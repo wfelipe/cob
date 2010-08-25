@@ -36,8 +36,12 @@ def system_list(request):
 
 def system_detail(request, system_name):
 	system = get_object_or_404(System, name=system_name)
+	servers = Server.objects.filter(system=system)
+	pclasses = system.puppetclass
 	return render_to_response('cmdb/system/detail.html',
 		{ 'system': system,
+			'servers': servers,
+			'pclasses': pclasses,
 		})
 
 def server_index(request):

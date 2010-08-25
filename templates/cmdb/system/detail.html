@@ -1,17 +1,30 @@
 {% if system %}
-	<table border="1">
-		<caption>System: {{ system.name }}</caption>
+	<h3>System: {{ system.name }}</h3>
 
+	Servers ({{servers.count}}):
+	<ul>
+		{% for server in servers %}
+		<li><a href="/cmdb/server/{{ server.name }}/">{{ server.name }}</a></li>
+		{% endfor %}
+	</ul>
+
+	<table border="1">
+		<caption>Puppet Classes ({{ pclasses.count }})</caption>
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th># servers</th>
+				<td>Name</td>
+				<td>Description</td>
 			</tr>
 		</thead>
 		<tbody>
+		{% for pclass in pclasses.all %}
 			<tr>
+				<td>{{ pclass.name }}</td>
+				<td>{{ pclass.description }}</td>
 			</tr>
+		{% endfor %}
 		</tbody>
+	</table>
 {% else %}
 	<p>No system available.</p>
 {% endif %}
