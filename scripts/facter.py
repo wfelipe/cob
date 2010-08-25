@@ -5,17 +5,17 @@
 from subprocess import Popen, PIPE
 import httplib, urllib
 
-facterp = Popen("facter --yaml", shell=True, stdout=PIPE, stderr=PIPE)
+facterp = Popen("facter", shell=True, stdout=PIPE, stderr=PIPE)
 if facterp.wait():
 	print "ERROR:", facterp.stderr.readlines()[0]
 
 # strip the --- line
-facterp.stdout.readline()
+#facterp.stdout.readline()
 facts = dict()
 #for fact in facterp.stdout:
 #	print fact.strip('\n')
 #	print fact.split(': ', 1)
-facts = dict([ fact.strip('\n').replace('"', '').strip().split(': ', 1) for fact in facterp.stdout ])
+facts = dict([ fact.strip('\n').strip().split(' => ', 1) for fact in facterp.stdout ])
 
 #import sys
 #sys.exit(0)
