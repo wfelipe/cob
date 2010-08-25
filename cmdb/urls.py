@@ -25,4 +25,7 @@ urlpatterns = patterns('',
 	(r'^server/list/$', 'cmdb.views.server_list'),
 	(r'^server/facts/$', 'cmdb.views.receive_facts'),
 	(r'^server/(?P<server_name>[^/]+)/$', 'cmdb.views.server_detail'),
+
+	# puppet
+	(r'^puppet/(?P<hostname>[^/]+)/(?P<format>[^/]+)?$', 'cmdb.views.puppet_class'),
 )

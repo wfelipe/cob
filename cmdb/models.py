@@ -24,11 +24,12 @@ class ServerType(models.Model):
 class Server(models.Model):
 	name = models.CharField(max_length=255, null=False, unique=True)
 	memory = models.FloatField(null=False)
-	serial = models.CharField(max_length=255, null=False)
+	serial = models.CharField(max_length=255, null=True, default=None)
 	virtual = models.BooleanField(null=False)
 
 	operating_system = models.ForeignKey('OperatingSystem', null=False)
 	server_type = models.ForeignKey('ServerType', null=False)
+	system = models.ForeignKey('System', null=True)
 
 	def __unicode__(self):
 		return str(self.name)
@@ -77,6 +78,9 @@ class PuppetClass(models.Model):
 	name = models.CharField(max_length=255, null=False, unique=True)
 	description = models.CharField(max_length=255)
 
+	def __unicode__(self):
+		return str(self.name)
+
 """
 System
 """
@@ -84,5 +88,14 @@ class System(models.Model):
 	name = models.CharField(max_length=255, null=False, unique=True)
 	description = models.CharField(max_length=255, null=True)
 
+	puppetclass = models.ManyToManyField(PuppetClass, through='SystemPuppetClass')
+
 	def __unicode__(self):
 		return str(self.name)
+
+class SystemPuppetClass(models.Model):
+	system = models.ForeignKey(System, null=False)
+	puppetclass = models.ForeignKey(PuppetClass, null=False)
+
+	def __unicode__(self):
+		return(self.system.name)

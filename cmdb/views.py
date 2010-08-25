@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render_to_response, _get_queryset
 from django.db import transaction
+from django.http import HttpResponse, HttpResponseNotFound
 from cmdb.models import *
 from cmdb.helpers import *
 
@@ -56,8 +57,6 @@ def server_detail(request, server_name):
 
 @transaction.commit_on_success
 def receive_facts(request):
-	from django.http import HttpResponse
-
 	if request.META['REQUEST_METHOD'] != 'POST':
 		return HttpResponse('Only POST allowed')
 	facts = request.POST
@@ -119,3 +118,29 @@ def receive_facts(request):
 					ipaddress=ipaddress, server=server)
 
 	return HttpResponse('OK')
+
+"""
+format available at http://docs.puppetlabs.com/guides/external_nodes.html
+"""
+def puppet_class(request, hostname, format='yaml'):
+	server = get_object_or_none(Server, name=hostname.split('.')[0])
+
+	if not server or not server.system:
+		return HttpResponseNotFound("Hostname not found or doesn't belong to a system")
+
+	classes = [ str(klass.name) for klass in server.system.puppetclass.all() ]
+
+	# lets dump the attributes
+	config = {
+		'classes': classes,
+	}
+
+	if format == 'yaml':
+		import yaml
+		return HttpResponse(
+			yaml.dump(config, explicit_start=True, default_flow_style=False),
+			content_type='text/plain',
+		)
+
+	# should be unreachable
+	return HttpResponse('No format available')
