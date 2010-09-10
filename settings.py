@@ -96,5 +96,4 @@ INSTALLED_APPS = (
 	'django.contrib.admindocs',
 	# cob applications
 	'dns',
-	'cmdb',
 )

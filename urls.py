@@ -25,5 +25,4 @@ urlpatterns = patterns('',
 
 	# cob urls
 	(r'^dns/', include('dns.urls')),
-	(r'^cmdb/', include('cmdb.urls')),
 )

@@ -1,9 +1,0 @@
-{% if attributes %}
-	<ul>
-	{% for attr, value in attributes.items %}
-		<li>{{ attr }}: {{ value }}</li>
-	{% endfor %}
-	</ul>
-{% else %}
-	<p>No {{ type }} available.</p>
-{% endif %}
