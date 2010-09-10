@@ -16,8 +16,8 @@ DATABASES = {
 	'default': {
 		'ENGINE': 'mysql',
 		'NAME': 'cob',
-		'USER': 'cob',
-		'PASSWORD': 'cob',
+		'USER': '',
+		'PASSWORD': '',
 		'HOST': 'localhost',
 		'PORT': '',
 		'OPTIONS': {
